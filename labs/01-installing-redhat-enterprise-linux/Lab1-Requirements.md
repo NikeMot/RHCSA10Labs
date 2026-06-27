@@ -11,19 +11,23 @@
 
 Build a clean RHCSA practice environment from scratch using two RHEL-family virtual machines. Verify that both systems are installed correctly, reachable, documented, and ready for later RHCSA labs.
 
-This is not a click-through installation note. Treat it as an infrastructure build handover: another engineer should be able to inspect your evidence and understand whether your environment is reliable enough for the rest of the lab series.
+This lab introduces the standard RHCSA workflow for this repository:
+
+1. solve the lab on the systems
+2. capture evidence
+3. verify persistence where relevant
+4. send evidence and seven reflection answers
+5. allow documentation to be completed and uploaded
 
 ---
 
 ## 2. Scenario
 
-You are joining a Linux operations team and need to prepare a controlled RHCSA practice environment.
+You are preparing a controlled RHCSA / EX200 practice environment.
 
-Before you can practise users, permissions, storage, services, SELinux, firewalld, SSH, NFS, systemd, and troubleshooting, you need two clean Linux servers with predictable names, working networking, package repositories, enabled security services, and documented baseline evidence.
+Before you can practise users, permissions, storage, services, SELinux, firewalld, SSH, NFS, systemd, and troubleshooting, you need two clean Linux systems with predictable names, working networking, package management visibility, enabled security controls, and documented baseline evidence.
 
-Your manager gives you this requirement:
-
-> Build two clean RHEL-family lab servers. Prove they boot, identify themselves correctly, have working networking, can reach package repositories, have SSH available, have SELinux and firewalld present, and survive a reboot without losing the baseline configuration.
+The exam is performance-based. You are not trying to write long notes while working. You are trying to complete the task, verify it, and capture enough evidence for documentation afterwards.
 
 ---
 
@@ -34,7 +38,7 @@ Use the reference material to work out the correct steps.
 | Area | Suggested reference |
 | ---- | ------------------- |
 | Primary book chapter | RHCSA 10 Cert Guide, Chapter 1 — Installing Red Hat Enterprise Linux |
-| Exam objective area | Deploy, configure, and maintain systems; operate running systems; understand and use essential tools |
+| Exam focus | Deploy, configure, and maintain systems; operate running systems; understand and use essential tools |
 | Installation docs | Official Red Hat installation documentation where needed |
 | System identity | `man hostnamectl`, `man hostname` |
 | Network checks | `man ip`, `man nmcli`, `man resolv.conf` |
@@ -45,13 +49,79 @@ Use the reference material to work out the correct steps.
 
 ---
 
-## 4. Requirements
+## 4. Exam Lab Rule — Two Parts
+
+Every RHCSA lab from now on has two parts.
+
+### Part 1 — New chapter content
+
+This section covers the current chapter content.
+
+For Lab 01, the new content is:
+
+* installing or preparing the RHEL-family systems
+* creating the base VM environment
+* setting hostnames
+* verifying OS identity
+* verifying storage baseline
+* verifying networking baseline
+* checking package management
+* checking SSH, firewalld, SELinux, and the default systemd target
+* proving the baseline survives reboot
+
+### Part 2 — Cumulative repetition
+
+This section repeats all topics learned so far.
+
+For Lab 01, there are no previous chapters, so the cumulative section is the baseline itself:
+
+* identify the system
+* inspect users and privilege context
+* inspect storage
+* inspect networking
+* inspect services
+* inspect SELinux
+* reboot and verify persistence
+
+From Lab 02 onward, the cumulative section must include previous topics as no-hint or reduced-hint tasks.
+
+---
+
+## 5. What This Lab Must Train
+
+### 1. Speed practice
+
+Do not spend time writing the final documentation while solving the lab. Capture evidence efficiently, then documentation will be handled afterwards.
+
+### 2. Mixed objectives
+
+Even Lab 01 touches multiple RHCSA objective areas: installation, system identity, networking, storage inspection, service checks, SELinux checks, and reboot validation.
+
+### 3. No-hint repetition
+
+Use the book and system documentation. The lab gives requirements, not every command in exact order.
+
+### 4. Reboot validation
+
+The baseline is not complete until both systems have been rebooted and checked again.
+
+### 5. Troubleshooting mindset
+
+If something does not work, diagnose it. Do not skip the check. Record the issue and the fix.
+
+### 6. Man-page fluency
+
+Use `man`, `--help`, `/usr/share/doc`, and official docs to confirm syntax and behaviour.
+
+---
+
+## 6. Requirements
 
 | ID | Requirement | Status |
 | -- | ----------- | ------ |
 | R1 | Create two RHEL-family virtual machines | Not started |
 | R2 | Name the systems `servera.lab.local` and `serverb.lab.local` | Not started |
-| R3 | Create a non-root administrative user for lab work | Not started |
+| R3 | Create or verify a non-root administrative user for lab work | Not started |
 | R4 | Verify operating system identity and kernel information | Not started |
 | R5 | Verify storage layout, mounted filesystems, and swap state | Not started |
 | R6 | Verify IP configuration, default route, and DNS configuration | Not started |
@@ -61,12 +131,11 @@ Use the reference material to work out the correct steps.
 | R10 | Verify firewalld state | Not started |
 | R11 | Verify SELinux state | Not started |
 | R12 | Reboot both systems and prove the baseline survives reboot | Not started |
-| R13 | Create a build record for the lab | Not started |
-| R14 | Capture evidence without exposing secrets or private data | Not started |
+| R13 | Capture evidence without exposing secrets or private data | Not started |
 
 ---
 
-## 5. Constraints
+## 7. Constraints
 
 You must not:
 
@@ -81,76 +150,14 @@ You must not:
 
 ---
 
-## 6. Assumptions
-
-Record your assumptions here.
-
-Examples:
-
-* RHEL 10 is preferred for the lab environment.
-* CentOS Stream 10 is acceptable if RHEL access is unavailable.
-* The lab is running locally in a hypervisor such as VMware Workstation, VirtualBox, Hyper-V, UTM, or another VM platform.
-* The machines use NAT or bridged networking.
-* Static addressing is optional in Lab 01, but the chosen addressing must be documented.
-* Later labs may require additional disks, packages, and network services.
-
----
-
-## 7. Expected Structure
-
-Your final environment should look like this:
-
-```text
-RHCSA10Labs/
-└── labs/
-    └── 01-installing-redhat-enterprise-linux/
-        ├── README.md
-        ├── Lab1-Requirements.md
-        └── Lab1-Output.md
-```
-
-Your lab systems should look like this:
+## 8. Expected Environment
 
 | System | Purpose | Required hostname |
 | ------ | ------- | ----------------- |
 | VM 1 | Primary administration target | `servera.lab.local` |
 | VM 2 | Remote target for later SSH, networking, storage, and service labs | `serverb.lab.local` |
 
----
-
-## 8. Deliverables
-
-By the end of the lab, this folder should contain:
-
-| File | Purpose |
-| ---- | ------- |
-| `Lab1-Requirements.md` | This lab assignment and requirements document |
-| `Lab1-Output.md` | Your completed lab report and verification evidence |
-
-Your completed `Lab1-Output.md` should include:
-
-| Evidence area | Minimum evidence expected |
-| ------------- | ------------------------- |
-| OS identity | `hostnamectl`, `/etc/os-release`, `uname -r` |
-| User context | `whoami`, `id`, `groups` |
-| Storage | `lsblk`, `lsblk -f`, `df -h`, `findmnt`, `swapon --show` |
-| Network | `ip addr`, `ip route`, `nmcli device status`, DNS evidence, ping tests |
-| Packages | `dnf repolist` or equivalent package management evidence |
-| Services | `systemctl status sshd`, `systemctl status firewalld` |
-| Security | `getenforce` or `sestatus` |
-| Persistence | repeat key checks after reboot |
-
----
-
-## 9. Implementation Tasks
-
-Use these tasks as a guide, not as a copy-paste walkthrough.
-
-### Task 1 — Build the virtual machines
-
-Create two RHEL-family VMs.
-
-Minimum expected configuration:
+Minimum VM guidance:
 
 | Setting | Minimum | Preferred |
 | ------- | ------- | --------- |
@@ -160,29 +167,30 @@ Minimum expected configuration:
 | Network | NAT or bridged | Same network for both VMs |
 | Install type | CLI-capable server install | Minimal/server installation |
 
-You need to decide whether to use RHEL or CentOS Stream and document why.
+---
+
+## 9. Part 1 — New Chapter Tasks
+
+Complete these tasks on the two systems.
+
+### Task 1 — Build the virtual machines
+
+Create two RHEL-family VMs. Use RHEL 10 where possible. Use CentOS Stream 10 only if RHEL access is unavailable.
 
 ### Task 2 — Set hostnames
 
-Configure the systems so their hostnames are:
+Configure the systems as:
 
 ```text
 servera.lab.local
 serverb.lab.local
 ```
 
-Verify the hostnames from the terminal.
+### Task 3 — Verify administrative access
 
-### Task 3 — Create your administrative lab user
+Verify that your normal lab user can log in and perform administrative work using the chosen privilege method.
 
-Create or verify a normal user account for lab work.
-
-Your evidence must show:
-
-* the user can log in
-* the user has the expected shell
-* the user can perform administrative tasks through the chosen privilege method
-* you did not expose the password in documentation
+Do not document passwords.
 
 ### Task 4 — Verify operating system identity
 
@@ -217,9 +225,7 @@ On both systems, prove:
 
 Prove that package management works or clearly document why it does not.
 
-At minimum, capture repository or package manager evidence. If repositories are unavailable because of subscription or image choice, document the limitation and how you will handle it in later labs.
-
-### Task 8 — Verify key services and security state
+### Task 8 — Verify services and security state
 
 On both systems, check:
 
@@ -228,273 +234,125 @@ On both systems, check:
 * SELinux mode
 * default systemd target
 
-Do not disable SELinux or firewalld to make the lab easier.
+### Task 9 — Reboot and prove persistence
 
-### Task 9 — Create a build record
-
-Create a short build record in your lab output.
-
-It should include:
-
-| Field | Value |
-| ----- | ----- |
-| Hypervisor | |
-| OS used | |
-| ISO/source used | |
-| VM names | |
-| Hostnames | |
-| Network mode | |
-| IP addresses | |
-| Disk size | |
-| Admin user | Do not include password |
-| Installation date | |
-| Known limitations | |
-
-### Task 10 — Reboot and prove persistence
-
-Reboot both machines.
-
-After reboot, verify again:
-
-* hostnames
-* IP addresses
-* default route
-* SSH service state
-* firewalld state
-* SELinux state
-* package manager/repository state
+Reboot both machines and repeat the key checks.
 
 ---
 
-## 10. Key Commands Used
+## 10. Part 2 — Cumulative Repetition
 
-Record the important commands you used.
+For Lab 01, repeat the baseline checks without using the task descriptions above.
 
-| Command | Purpose |
-| ------- | ------- |
-| `hostnamectl` | Verify or set hostname and OS identity |
-| `cat /etc/os-release` | Confirm operating system release |
-| `uname -r` | Confirm running kernel version |
-| `whoami` | Confirm current user context |
-| `id` | Confirm UID, GID, and group membership |
-| `groups` | Confirm supplementary group membership |
-| `lsblk` | Inspect block devices |
-| `lsblk -f` | Inspect filesystems and UUIDs |
-| `df -h` | Inspect mounted filesystem usage |
-| `findmnt` | Inspect mount tree |
-| `swapon --show` | Inspect active swap |
-| `ip addr` | Inspect IP addresses |
-| `ip route` | Inspect routes and default gateway |
-| `nmcli device status` | Inspect NetworkManager device state |
-| `nmcli connection show` | Inspect NetworkManager connections |
-| `cat /etc/resolv.conf` | Inspect DNS resolver configuration |
-| `ping` | Test connectivity |
-| `dnf repolist` | Verify repository visibility |
-| `systemctl get-default` | Verify default systemd target |
-| `systemctl status sshd --no-pager` | Verify SSH service state |
-| `systemctl status firewalld --no-pager` | Verify firewall service state |
-| `getenforce` | Verify SELinux mode |
-| `reboot` | Test persistence after restart |
+On both systems, produce evidence for:
 
-Add or remove commands based on what you actually used.
+| Area | Evidence expected |
+| ---- | ----------------- |
+| Identity | hostname, OS release, kernel |
+| User context | current user, UID/GID, groups, privilege method |
+| Storage | disks, filesystems, mounts, swap |
+| Network | IP address, routes, DNS, NetworkManager state, ping test |
+| Packages | repository or package manager status |
+| Services | SSH, firewalld, default target |
+| Security | SELinux mode |
+| Persistence | post-reboot verification |
+
+This is the first cumulative set. It becomes the foundation for Lab 02.
 
 ---
 
-## 11. Files Created or Changed
+## 11. Evidence To Send After Solving
 
-| Path | Purpose |
-| ---- | ------- |
-| `labs/01-installing-redhat-enterprise-linux/Lab1-Requirements.md` | Lab requirements and assignment |
-| `labs/01-installing-redhat-enterprise-linux/Lab1-Output.md` | Completed lab evidence and reflection |
+After you complete the lab, send command output or clear summaries for both systems.
 
-On the lab VMs, record any files you changed. Do not invent files if you did not change them.
+Minimum evidence:
 
----
-
-## 12. Verification Evidence
-
-This section proves that the lab worked.
-
-| Check | Evidence | Result |
-| ----- | -------- | ------ |
-| `servera` installed | OS and hostname evidence captured | Passed / Failed |
-| `serverb` installed | OS and hostname evidence captured | Passed / Failed |
-| Hostnames correct | `hostnamectl` output captured | Passed / Failed |
-| Storage baseline known | `lsblk`, `df -h`, `findmnt` captured | Passed / Failed |
-| Networking baseline known | `ip addr`, `ip route`, `nmcli` captured | Passed / Failed |
-| VM-to-VM connectivity works | ping test captured | Passed / Failed |
-| Package management checked | `dnf repolist` or limitation documented | Passed / Failed |
-| SSH checked | `systemctl status sshd --no-pager` captured | Passed / Failed |
-| firewalld checked | `systemctl status firewalld --no-pager` captured | Passed / Failed |
-| SELinux checked | `getenforce` or `sestatus` captured | Passed / Failed |
-| Reboot persistence verified | post-reboot checks captured | Passed / Failed |
-| No sensitive data committed | evidence reviewed before commit | Passed / Failed |
-
----
-
-## 13. Diagram
-
-Use this diagram to describe the intended lab environment.
-
-```mermaid
-flowchart LR
-    A[Windows Workstation / Hypervisor] --> B[servera.lab.local]
-    A --> C[serverb.lab.local]
-    B <--> C
-    B --> D[Future RHCSA Labs]
-    C --> D
+```bash
+hostnamectl
+cat /etc/os-release
+uname -r
+whoami
+id
+groups
+lsblk
+lsblk -f
+df -h
+findmnt
+swapon --show
+ip addr
+ip route
+nmcli device status
+nmcli connection show
+cat /etc/resolv.conf
+ping -c 4 <other-server-ip>
+dnf repolist
+systemctl get-default
+systemctl status sshd --no-pager
+systemctl status firewalld --no-pager
+getenforce
 ```
 
-Update the diagram if your final setup differs.
+After reboot, send the key persistence checks again:
+
+```bash
+hostnamectl
+ip addr
+ip route
+systemctl get-default
+systemctl status sshd --no-pager
+systemctl status firewalld --no-pager
+getenforce
+dnf repolist
+```
 
 ---
 
-## 14. Issues Encountered
+## 12. Documentation Workflow
 
-Record mistakes, errors, or blockers.
+You solve the lab.
 
-| Issue | Cause | Fix |
-| ----- | ----- | --- |
-| | | |
+Documentation will be handled afterwards.
 
-If there were no issues, write:
+You only need to send:
 
-> No major issues encountered.
+* evidence output
+* any issues encountered
+* any decisions you made
+* exactly seven reflection answers
 
----
-
-## 15. Decisions Made
-
-Record important technical decisions.
-
-| Decision | Reason |
-| -------- | ------ |
-| Use two VMs | Later RHCSA labs need remote access, networking, storage, and service/client testing |
-| Use `servera.lab.local` and `serverb.lab.local` | Predictable naming makes later labs easier to document and troubleshoot |
-| Keep SELinux enabled | RHCSA requires SELinux competence and production systems should not bypass security controls casually |
-| Keep firewalld available | Later service labs require firewall configuration and troubleshooting |
-| Capture evidence after reboot | RHCSA tasks must persist after reboot where applicable |
-
-Add your own decisions if they differ.
+The final `Lab1-Output.md` will be created and uploaded to this folder.
 
 ---
 
-## 16. Security and Production Considerations
-
-Explain the production relevance of this lab.
-
-Cover:
-
-* why baseline documentation matters
-* why hostnames should be predictable
-* why SELinux should not be disabled casually
-* why firewalld should remain part of the lab
-* why package repository state matters before later work
-* why reboot persistence is essential
-* why passwords, private keys, subscription details, and screenshots with sensitive data must not be committed
-
-Write your notes in `Lab1-Output.md`.
-
----
-
-## 17. Final Outcome
-
-State clearly whether the lab was completed.
-
-Example:
-
-> The lab was completed successfully. Two RHEL-family systems were installed, named, verified, reboot-tested, and documented. Baseline evidence confirms that the systems are ready for the next RHCSA lab.
-
----
-
-## 18. What I Learned
-
-Write 3–6 bullet points.
-
-Examples:
-
-* I learned how to verify the operating system and kernel version from the command line.
-* I learned why hostnames matter in multi-server Linux labs.
-* I learned how to inspect block devices, mounted filesystems, and swap.
-* I learned how to verify NetworkManager state and basic connectivity.
-* I learned why SELinux and firewalld should be part of the baseline instead of being disabled.
-
----
-
-## 19. What I Would Improve in Production
-
-Write 2–5 bullet points.
-
-Examples:
-
-* Use a documented golden image or automated build process.
-* Use configuration management to enforce baseline settings.
-* Store secrets in a dedicated secrets manager rather than in files or notes.
-* Use monitoring to confirm host availability and service state.
-* Use central logging for audit and troubleshooting.
-
----
-
-## 20. References Used
-
-List the references you actually used.
-
-| Reference | Used for |
-| --------- | -------- |
-| RHCSA 10 Cert Guide, Chapter 1 | Installing Red Hat Enterprise Linux and preparing the practice environment |
-| `man hostnamectl` | Hostname and system identity checks |
-| `man ip` | Network inspection |
-| `man nmcli` | NetworkManager inspection |
-| `man lsblk` | Block device inspection |
-| `man findmnt` | Mount tree inspection |
-| `man dnf` | Repository and package management checks |
-| `man systemctl` | Service and target verification |
-| `man getenforce` | SELinux mode verification |
-| Official Red Hat documentation | Installation and system administration clarification where needed |
-
----
-
-## 21. Completion Checklist
-
-* [ ] Requirements understood
-* [ ] Two RHEL-family VMs created
-* [ ] `servera.lab.local` configured
-* [ ] `serverb.lab.local` configured
-* [ ] Administrative lab user verified
-* [ ] OS identity evidence captured
-* [ ] Storage evidence captured
-* [ ] Network evidence captured
-* [ ] VM-to-VM connectivity tested
-* [ ] Package manager/repository state checked
-* [ ] SSH service checked
-* [ ] firewalld checked
-* [ ] SELinux checked
-* [ ] Reboot persistence verified
-* [ ] Issues documented
-* [ ] Decisions documented
-* [ ] Security considerations documented
-* [ ] Diagram added or confirmed
-* [ ] Files committed with clear messages
-* [ ] Work pushed to GitHub
-* [ ] No secrets or private data committed
-
----
-
-## 22. Reflection Questions
+## 13. Seven Reflection Questions
 
 Answer these after completing the lab.
 
-1. Why do you need two systems for a serious RHCSA practice environment?
-2. What is the difference between a VM name and a Linux hostname?
-3. Why is `hostnamectl` more useful than only checking the shell prompt?
-4. What does `lsblk -f` show that plain `lsblk` does not?
-5. Why is it important to know whether swap is active?
-6. What does the default route tell you?
-7. Why is NetworkManager important on modern RHEL systems?
-8. Why should you verify package repositories before later labs?
-9. Why should SELinux remain enabled during RHCSA practice?
-10. Why should firewalld remain available even if no service is exposed yet?
-11. What evidence proves that your configuration survived a reboot?
-12. What would make this lab output look professional to a hiring manager?
-13. What would make this lab output look careless?
-14. What information should you avoid committing to GitHub from this lab?
+1. What was the most important thing you learned while building the two RHEL-family systems?
+2. Which part of the lab was hardest or slowest?
+3. Which command helped you the most, and why?
+4. What evidence proves that both systems are ready for the next lab?
+5. What would break later if you skipped the reboot verification?
+6. Which part of the baseline are you least confident about?
+7. What will you practise again before starting Lab 02?
+
+---
+
+## 14. Completion Criteria
+
+Lab 01 is complete only when:
+
+* both systems boot successfully
+* both hostnames are correct
+* administrative access is verified
+* storage baseline is known
+* networking baseline is known
+* both systems can communicate by IP address
+* package manager state is known
+* SSH state is known
+* firewalld state is known
+* SELinux state is known
+* key checks have been repeated after reboot
+* evidence is captured
+* seven reflection questions are answered
+* final documentation is uploaded to GitHub
