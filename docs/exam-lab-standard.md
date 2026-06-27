@@ -4,11 +4,11 @@
 
 This repository is focused on passing the RHCSA / EX200 exam. The labs are not designed as broad SRE, DevOps, or portfolio expansion projects unless that directly helps with the exam.
 
-Every lab must train performance-based execution: complete the task, verify it, make it persistent where required, and document the evidence.
+Every lab must train performance-based execution: complete the task, verify it, make it persistent where required, break something safely, fix it, and document the evidence.
 
 ## Standard lab format
 
-Every RHCSA lab has two parts.
+Every RHCSA lab has three mandatory sections.
 
 ### Part 1 — New chapter content
 
@@ -36,6 +36,37 @@ Examples:
 * Lab 4 repeats Labs 1-3 plus text processing.
 * Later labs should mix users, permissions, services, storage, SELinux, firewalld, networking, boot persistence, and troubleshooting.
 
+### Part 3 — Break and fix
+
+Every lab must include at least one deliberate break-and-fix exercise.
+
+This is the most important practical training component.
+
+Break-and-fix work must be:
+
+* safe for a lab VM
+* recoverable using RHCSA-level skills
+* relevant to the current or previous topics
+* verified after repair
+* documented with symptom, diagnosis, fix, and verification
+
+Examples by topic:
+
+* wrong hostname
+* broken network connection
+* stopped or disabled service
+* incorrect file permissions
+* broken mount entry
+* wrong SELinux context
+* blocked firewall port
+* failed SSH login
+* bad cron job
+* broken Apache content access
+* missing package or repository issue
+* boot target misconfiguration
+
+Do not include destructive breaks that risk unrecoverable data loss unless the lab explicitly states that the VM has a snapshot or is disposable.
+
 ## What each lab must train
 
 ### 1. Speed practice
@@ -56,7 +87,7 @@ Anything that should persist must be checked after reboot or by an equivalent pe
 
 ### 5. Troubleshooting drills
 
-Labs should include broken or ambiguous situations where appropriate, especially around boot, mounts, permissions, services, SELinux, firewalld, SSH, and networking.
+Every lab must contain break-and-fix work. Troubleshooting should especially target boot, mounts, permissions, services, SELinux, firewalld, SSH, networking, package management, users, and scheduled tasks as those topics become available.
 
 ### 6. Man-page fluency
 
@@ -73,6 +104,7 @@ The student sends:
 * command output
 * relevant notes
 * errors encountered
+* break-and-fix symptom, diagnosis, fix, and verification
 * screenshots only if useful and non-sensitive
 * answers to exactly seven reflection questions
 
@@ -88,8 +120,8 @@ The reflection questions should test understanding of:
 * what was difficult
 * which commands mattered
 * how verification was performed
+* what broke and how it was fixed
 * what would fail after reboot
-* what would be unsafe on the exam or in a real system
 * what should be practised again
 
 ## Repository rule
