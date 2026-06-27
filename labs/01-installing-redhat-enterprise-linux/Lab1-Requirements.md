@@ -16,8 +16,10 @@ This lab introduces the standard RHCSA workflow for this repository:
 1. solve the lab on the systems
 2. capture evidence
 3. verify persistence where relevant
-4. send evidence and seven reflection answers
-5. allow documentation to be completed and uploaded
+4. deliberately break something safe
+5. diagnose and fix it
+6. send evidence and seven reflection answers
+7. allow documentation to be completed and uploaded
 
 ---
 
@@ -27,7 +29,7 @@ You are preparing a controlled RHCSA / EX200 practice environment.
 
 Before you can practise users, permissions, storage, services, SELinux, firewalld, SSH, NFS, systemd, and troubleshooting, you need two clean Linux systems with predictable names, working networking, package management visibility, enabled security controls, and documented baseline evidence.
 
-The exam is performance-based. You are not trying to write long notes while working. You are trying to complete the task, verify it, and capture enough evidence for documentation afterwards.
+The exam is performance-based. You are not trying to write long notes while working. You are trying to complete the task, verify it, break and repair safe failures, and capture enough evidence for documentation afterwards.
 
 ---
 
@@ -49,9 +51,9 @@ Use the reference material to work out the correct steps.
 
 ---
 
-## 4. Exam Lab Rule — Two Parts
+## 4. Exam Lab Rule — Three Parts
 
-Every RHCSA lab from now on has two parts.
+Every RHCSA lab from now on has three mandatory parts.
 
 ### Part 1 — New chapter content
 
@@ -85,6 +87,12 @@ For Lab 01, there are no previous chapters, so the cumulative section is the bas
 
 From Lab 02 onward, the cumulative section must include previous topics as no-hint or reduced-hint tasks.
 
+### Part 3 — Break and fix
+
+Every lab must include deliberate break-and-fix work.
+
+For Lab 01, the breaks must be safe and recoverable. You are not trying to destroy the system. You are training diagnosis and recovery.
+
 ---
 
 ## 5. What This Lab Must Train
@@ -107,7 +115,15 @@ The baseline is not complete until both systems have been rebooted and checked a
 
 ### 5. Troubleshooting mindset
 
-If something does not work, diagnose it. Do not skip the check. Record the issue and the fix.
+You must break and fix at least two safe items in this lab.
+
+Record:
+
+* symptom
+* suspected cause
+* commands used to diagnose
+* fix applied
+* verification after repair
 
 ### 6. Man-page fluency
 
@@ -131,7 +147,8 @@ Use `man`, `--help`, `/usr/share/doc`, and official docs to confirm syntax and b
 | R10 | Verify firewalld state | Not started |
 | R11 | Verify SELinux state | Not started |
 | R12 | Reboot both systems and prove the baseline survives reboot | Not started |
-| R13 | Capture evidence without exposing secrets or private data | Not started |
+| R13 | Break and fix at least two safe baseline issues | Not started |
+| R14 | Capture evidence without exposing secrets or private data | Not started |
 
 ---
 
@@ -141,8 +158,12 @@ You must not:
 
 * skip verification after installation
 * rely only on the GUI to prove the system state
-* disable SELinux
-* permanently disable firewalld
+* disable SELinux as a workaround
+* permanently disable firewalld as a workaround
+* break storage boot files in Lab 01
+* damage `/etc/fstab` in Lab 01
+* remove boot-critical packages
+* lock yourself out without console access
 * commit passwords, SSH private keys, subscription details, or screenshots containing sensitive account information
 * commit RHEL ISO files, PDFs, EPUBs, or copied book material
 * proceed to Lab 02 until both systems have been reboot-tested
@@ -261,7 +282,84 @@ This is the first cumulative set. It becomes the foundation for Lab 02.
 
 ---
 
-## 11. Evidence To Send After Solving
+## 11. Part 3 — Break and Fix
+
+Complete at least two of the following safe break-and-fix drills.
+
+Do not use the same break twice.
+
+### Break/Fix A — Wrong hostname
+
+On one VM, intentionally set the wrong hostname.
+
+Then diagnose and repair it.
+
+Evidence expected:
+
+* incorrect hostname evidence
+* command used to identify the problem
+* command or method used to fix it
+* correct hostname evidence after repair
+* persistence evidence after reboot or hostname service verification
+
+### Break/Fix B — Stopped SSH service
+
+On one VM, stop `sshd`.
+
+Then diagnose and repair it from local console access.
+
+Evidence expected:
+
+* failed or inactive SSH service state
+* command used to diagnose service state
+* command used to restart service
+* command used to confirm active state
+* enablement state if relevant
+
+### Break/Fix C — Disabled firewalld service
+
+On one VM, stop or disable `firewalld`.
+
+Then diagnose and repair it.
+
+Evidence expected:
+
+* inactive or disabled state
+* command used to identify the issue
+* command used to restore the expected state
+* final service status
+
+### Break/Fix D — Broken VM-to-VM connectivity due to NetworkManager connection down
+
+On one VM, bring the active NetworkManager connection down if you have console access and know how to bring it back.
+
+Then diagnose and repair it.
+
+Evidence expected:
+
+* failed ping or missing IP evidence
+* `nmcli` evidence showing connection/device state
+* repair command or method
+* successful ping after repair
+
+Only attempt this if you have local console access through the hypervisor.
+
+### Break/Fix E — Missing DNS resolver visibility
+
+Temporarily create a DNS/resolution problem that does not break local console access, then repair it.
+
+Evidence expected:
+
+* symptom
+* resolver evidence
+* fix
+* verification
+
+Do not make permanent DNS changes you do not understand.
+
+---
+
+## 12. Evidence To Send After Solving
 
 After you complete the lab, send command output or clear summaries for both systems.
 
@@ -305,9 +403,20 @@ getenforce
 dnf repolist
 ```
 
+For each break-and-fix drill, send:
+
+```text
+Break/Fix chosen:
+Symptom:
+Diagnosis commands:
+Fix applied:
+Verification after fix:
+What you learned:
+```
+
 ---
 
-## 12. Documentation Workflow
+## 13. Documentation Workflow
 
 You solve the lab.
 
@@ -318,27 +427,28 @@ You only need to send:
 * evidence output
 * any issues encountered
 * any decisions you made
+* break-and-fix notes
 * exactly seven reflection answers
 
 The final `Lab1-Output.md` will be created and uploaded to this folder.
 
 ---
 
-## 13. Seven Reflection Questions
+## 14. Seven Reflection Questions
 
 Answer these after completing the lab.
 
-1. What was the most important thing you learned while building the two RHEL-family systems?
-2. Which part of the lab was hardest or slowest?
-3. Which command helped you the most, and why?
+1. What was the most important thing you learned while building and verifying the two RHEL-family systems?
+2. Which break-and-fix task taught you the most, and why?
+3. Which command helped you diagnose a problem fastest?
 4. What evidence proves that both systems are ready for the next lab?
-5. What would break later if you skipped the reboot verification?
-6. Which part of the baseline are you least confident about?
-7. What will you practise again before starting Lab 02?
+5. What would break later if you skipped reboot verification?
+6. Which part of the baseline or troubleshooting process are you least confident about?
+7. What will you intentionally practise breaking and fixing again before Lab 02?
 
 ---
 
-## 14. Completion Criteria
+## 15. Completion Criteria
 
 Lab 01 is complete only when:
 
@@ -352,6 +462,7 @@ Lab 01 is complete only when:
 * SSH state is known
 * firewalld state is known
 * SELinux state is known
+* at least two safe break-and-fix drills are completed
 * key checks have been repeated after reboot
 * evidence is captured
 * seven reflection questions are answered
